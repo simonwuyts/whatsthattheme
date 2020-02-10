@@ -1,20 +1,44 @@
-import analyzeColors from 'rgbaster/dist'
+import analyzeColors from 'rgbaster'
+import Color from 'color'
+import { ref, Ref } from '@vue/composition-api'
+import { readFileAsDataURL } from './utils'
+import './use-composition-api'
 
 export interface ColorResult {
   color: string
   count: number
 }
 
-export const useColors = (image: File) => {
-  let result: ColorResult[] = []
+const imageColors: Ref<ColorResult[]> = ref([])
 
-  const reader = new FileReader()
-  reader.readAsDataURL(image)
-  reader.onload = async () => {
-    if (typeof reader.result === 'string') {
-      result = await analyzeColors(reader.result)
+export function useColors() {
+  async function getImageColors(image: File) {
+    let results = []
+    const imageDataURL = await readFileAsDataURL(image)
+    if (typeof imageDataURL === 'string') {
+      results = await analyzeColors(imageDataURL)
+      results = results
+        .slice(0, 5000)
+        .filter((color: ColorResult) => {
+          const colorObject: Color = Color(color.color)
+          return (
+            colorObject.luminosity() > 0.2 && colorObject.luminosity() < 0.7
+          )
+        })
+        .map((color: ColorResult) => {
+          return {
+            count: color.count,
+            color: Color(color.color)
+              .hex()
+              .toString()
+          }
+        })
     }
+    imageColors.value = results
   }
 
-  return result
+  return {
+    imageColors,
+    getImageColors
+  }
 }

@@ -5,16 +5,16 @@
 </template>
 
 <script lang="ts">
-import { createComponent, ref, Ref } from '@vue/composition-api'
-import { useColors, ColorResult } from '@/composables/use-colors'
+import { createComponent } from '@vue/composition-api'
+import { useColors } from '@/composables/use-colors'
 
 export default createComponent({
   name: 'FileInput',
   setup() {
-    const imageColors: Ref<ColorResult[]> = ref([])
+    const { imageColors, getImageColors } = useColors()
 
-    async function updateFile(files: FileList) {
-      imageColors.value = useColors(files[0])
+    function updateFile(files: FileList) {
+      getImageColors(files[0])
     }
 
     return {
