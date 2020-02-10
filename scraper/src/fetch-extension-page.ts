@@ -1,7 +1,8 @@
-import axios from 'axios'
+import fetch from 'node-fetch'
 
 const EXTENSIONS_API_ENDPOINT =
   'https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery'
+const EXTENSIONS_PER_PAGE = 100
 
 export async function fetchExtensionPage(pageNumber: number) {
   // Set search query
@@ -15,7 +16,7 @@ export async function fetchExtensionPage(pageNumber: number) {
           { filterType: 5, value: 'Themes' }
         ],
         direction: 2,
-        pageSize: 100,
+        pageSize: EXTENSIONS_PER_PAGE,
         pageNumber,
         sortBy: 4,
         sortOrder: 0
@@ -32,10 +33,13 @@ export async function fetchExtensionPage(pageNumber: number) {
   }
 
   // Fetch API endpoint
-  const { data: extensions } = await axios.post(EXTENSIONS_API_ENDPOINT, body, {
+  const res = await fetch(EXTENSIONS_API_ENDPOINT, {
+    method: 'POST',
+    body: JSON.stringify(body),
     headers
   })
 
-  console.log(JSON.stringify(extensions, null, 2))
+  const extensions = await res.json()
+
   return extensions
 }

@@ -5,10 +5,18 @@
   "author": "Simon Wuyts",
   "license": "MIT",
   "scripts": {
-    "getthemes": "ts-node src/index.ts"
+    "getthemes": "ts-node --files src/index.ts"
   },
   "dependencies": {
-    "node-ts": "^5.0.3",
-    "typescript": "^3.7.5"
+    "@types/extract-zip": "^1.6.2",
+    "@types/fs-extra": "^8.0.1",
+    "@types/node": "^13.7.0",
+    "@types/node-fetch": "^2.5.4",
+    "fs-extra": "^8.1.0",
+    "node-fetch": "^2.6.0",
+    "strip-json-comments": "^3.0.1",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5",
+    "unzip-stream": "^0.3.0"
   }
 }
