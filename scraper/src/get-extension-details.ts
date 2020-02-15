@@ -1,10 +1,9 @@
-import { Extension } from './types'
+import { Extension, ThemeDefinition } from './types'
 import fetch, { Response } from 'node-fetch'
 import * as unzip from 'unzip-stream'
 import stripComments from 'strip-json-comments'
 import * as path from 'path'
 import { emptyDir, readFile } from 'fs-extra'
-import { ThemeDefinition } from './types'
 
 const EXTENSION_PACKAGE_KEY = 'Microsoft.VisualStudio.Services.VSIXPackage'
 const EXTENSION_README_KEY = 'Microsoft.VisualStudio.Services.Content.Details'
@@ -38,47 +37,61 @@ export async function getExtensionDetails(extension: Extension) {
   // Fetch theme package
   let packageFile: Response
   if (packageUrl) {
-    packageFile = await fetch(packageUrl)
+    try {
+      packageFile = await fetch(packageUrl)
 
-    // Unzip theme package
-    await new Promise((resolve, reject) => {
-      packageFile.body
-        .pipe(unzip.Extract({ path: TEMP_PATH }))
-        .on('close', resolve)
-        .on('error', () => {
-          reject()
-        })
-    })
+      // Unzip theme package
+      await new Promise((resolve, reject) => {
+        packageFile.body
+          .pipe(unzip.Extract({ path: TEMP_PATH }))
+          .on('close', resolve)
+          .on('error', () => {
+            reject()
+          })
+      })
+    } catch (e) {
+      console.log(
+        `Something went wrong while fetching and unzipping the theme package`
+      )
+    }
   } else {
     console.log('No package url')
   }
 
-  // Read package.json
-  const packageOptions = await readJSON(
-    path.join(TEMP_PATH, 'extension/package.json')
-  )
-
   const themeColors: string[] = []
 
-  if (packageOptions.contributes && packageOptions.contributes.themes) {
-    for (const theme of packageOptions?.contributes?.themes) {
-      if (theme.path.match(/(.+)\.json/)) {
-        const themeDefinition: ThemeDefinition = await readJSON(
-          path.join(TEMP_PATH, 'extension', theme.path)
-        )
-        if (Array.isArray(themeDefinition.tokenColors)) {
-          themeDefinition.tokenColors.forEach(token => {
-            if (token.settings.foreground) {
-              themeColors.push(token.settings.foreground)
-            }
-          })
+  try {
+    // Read package.json
+    const packageOptions = await readJSON(
+      path.join(TEMP_PATH, 'extension/package.json')
+    )
+
+    if (packageOptions?.contributes?.themes) {
+      for (const theme of packageOptions.contributes.themes) {
+        if (theme.path.match(/(.+)\.json/)) {
+          const themeDefinition: ThemeDefinition = await readJSON(
+            path.join(TEMP_PATH, 'extension', theme.path)
+          )
+          if (Array.isArray(themeDefinition.tokenColors)) {
+            themeDefinition.tokenColors.forEach(token => {
+              if (token.settings?.foreground) {
+                themeColors.push(token.settings.foreground)
+              }
+            })
+          }
         }
       }
     }
+  } catch (e) {
+    console.log(`Something went wrong while extracting the theme colors.`)
   }
 
   // Clean tmp folder
-  await emptyDir(TEMP_PATH)
+  try {
+    await emptyDir(TEMP_PATH)
+  } catch (e) {
+    console.log(`Something went wrong while cleaning the temporary folder.`)
+  }
 
   // Return result
   return {

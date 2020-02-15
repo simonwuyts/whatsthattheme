@@ -32,14 +32,19 @@ export async function fetchExtensionPage(pageNumber: number) {
     'User-Agent': ''
   }
 
-  // Fetch API endpoint
-  const res = await fetch(EXTENSIONS_API_ENDPOINT, {
-    method: 'POST',
-    body: JSON.stringify(body),
-    headers
-  })
+  let extensions
 
-  const extensions = await res.json()
+  try {
+    // Fetch API endpoint
+    const res = await fetch(EXTENSIONS_API_ENDPOINT, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers
+    })
 
+    extensions = await res.json()
+  } catch (e) {
+    console.log(`Something went wrong while fetching the Extensions API.`)
+  }
   return extensions
 }

@@ -1,6 +1,6 @@
+import { Extension, ThemeResult } from './types'
 import { fetchExtensionPage } from './fetch-extension-page'
 import { getExtensionDetails } from './get-extension-details'
-import { Extension, ThemeResult } from './types'
 import { writeFile, createFile } from 'fs-extra'
 import * as path from 'path'
 
@@ -12,31 +12,49 @@ export async function collectExtensions() {
   let resultsAvailable = true
   const extensions: ThemeResult[] = []
 
-  while (activePage < 2) {
-    const results = await fetchExtensionPage(activePage)
-    console.log(`Page ${activePage} was fetched.`)
-    const pageExtensions: Extension[] = results.results[0].extensions
+  while (resultsAvailable) {
+    try {
+      const results = await fetchExtensionPage(activePage)
+      console.log(`Page ${activePage} was fetched.`)
+      const pageExtensions: Extension[] = results.results[0].extensions
 
-    if (pageExtensions.length > 0) {
-      // Fetch details
-      for (const [i, extension] of Object.entries(pageExtensions)) {
-        const extensionDetails = await getExtensionDetails(extension)
-        extensions.push({
-          name: extension.displayName,
-          description: extension.shortDescription,
-          readme: extensionDetails.readmeUrl,
-          icon: extensionDetails.iconUrl,
-          colors: extensionDetails.themeColors
-        })
-        console.log(`Extension ${parseInt(i) + 1} was processed.`)
+      if (pageExtensions.length > 0) {
+        // Fetch details
+        for (const [i, extension] of Object.entries(pageExtensions)) {
+          try {
+            const extensionDetails = await getExtensionDetails(extension)
+            extensions.push({
+              name: extension.displayName,
+              description: extension.shortDescription,
+              readme: extensionDetails.readmeUrl,
+              icon: extensionDetails.iconUrl,
+              colors: extensionDetails.themeColors
+            })
+            console.log(
+              `Extension ${parseInt(i) + 1} (${
+                extension.displayName
+              }) was processed.`
+            )
+          } catch (e) {
+            console.log(
+              `Something went wrong with extension ${parseInt(i) + 1}`
+            )
+          }
+        }
+        activePage++
+      } else {
+        resultsAvailable = false
       }
-      activePage++
-    } else {
-      resultsAvailable = false
+    } catch (e) {
+      console.log(`Something went wrong with page ${activePage}`)
     }
   }
 
   // Save results
-  await createFile(RESULTS_FILE_LOCATION)
-  await writeFile(RESULTS_FILE_LOCATION, JSON.stringify(extensions))
+  try {
+    await createFile(RESULTS_FILE_LOCATION)
+    await writeFile(RESULTS_FILE_LOCATION, JSON.stringify(extensions))
+  } catch (e) {
+    console.log(`Something went wrong while saving the results.`)
+  }
 }
