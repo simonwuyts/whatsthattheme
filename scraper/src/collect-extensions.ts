@@ -4,7 +4,10 @@ import { getExtensionDetails } from './get-extension-details'
 import { writeFile, createFile } from 'fs-extra'
 import * as path from 'path'
 
-const RESULTS_FILE_LOCATION = path.join(process.cwd(), 'results/themes.json')
+const RESULTS_FILE_LOCATION = path.join(
+  process.cwd(),
+  '../../public/data/themes.json'
+)
 
 export async function collectExtensions() {
   // Collect and combine all results
@@ -24,6 +27,7 @@ export async function collectExtensions() {
           try {
             const extensionDetails = await getExtensionDetails(extension)
             extensions.push({
+              id: extension.extensionId,
               name: extension.displayName,
               description: extension.shortDescription,
               readme: extensionDetails.readmeUrl,
@@ -50,10 +54,14 @@ export async function collectExtensions() {
     }
   }
 
+  const filteredExtensions = extensions.filter(
+    extension => extension.colors.length > 0
+  )
+
   // Save results
   try {
     await createFile(RESULTS_FILE_LOCATION)
-    await writeFile(RESULTS_FILE_LOCATION, JSON.stringify(extensions))
+    await writeFile(RESULTS_FILE_LOCATION, JSON.stringify(filteredExtensions))
   } catch (e) {
     console.log(`Something went wrong while saving the results.`)
   }

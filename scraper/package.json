@@ -6,7 +6,8 @@
   "author": "Simon Wuyts",
   "license": "MIT",
   "scripts": {
-    "getthemes": "ts-node --files src/index.ts"
+    "getthemes": "ts-node --files src/index.ts",
+    "themestats": "ts-node src/stats.ts"
   },
   "dependencies": {
     "@types/extract-zip": "^1.6.2",

@@ -1,4 +1,5 @@
 export interface Extension {
+  extensionId: string
   displayName: string
   shortDescription: string
   versions: {
@@ -24,6 +25,7 @@ export interface ThemeContribution {
 }
 
 export interface ThemeResult {
+  id: string
   name: string
   description: string
   icon?: string
