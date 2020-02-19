@@ -10,8 +10,7 @@
 
 <script lang="ts">
 import { createComponent } from '@vue/composition-api'
-import { useColors } from '@/composables/use-colors'
-import { useThemes } from '@/composables/use-themes'
+import { useStateMachine } from '@/composables/use-state-machine'
 import AppFooter from '@/components/AppFooter.vue'
 import AppHeader from '@/components/AppHeader.vue'
 import FileInput from '@/components/FileInput.vue'
@@ -30,26 +29,11 @@ export default createComponent({
   },
 
   setup() {
-    const { imageColors } = useColors()
-    const {
-      themes,
-      themeScoresSorted,
-      getThemes,
-      compareColors,
-      isComparing
-    } = useThemes()
-
-    const submitColors = () => {
-      compareColors(imageColors.value)
-    }
+    const { send, state } = useStateMachine()
 
     return {
-      imageColors,
-      themes,
-      themeScoresSorted,
-      getThemes,
-      submitColors,
-      isComparing
+      send,
+      state
     }
   }
 })
@@ -59,12 +43,14 @@ export default createComponent({
 @import './assets/scss/generic';
 
 #app {
-  margin: 9.6rem auto;
+  margin: 0 auto;
   max-width: 80rem;
-  width: calc(100% - 6.4rem);
+  padding: 9.6rem 0;
+  width: calc(100% - 9.6rem);
 
-  @media (max-width: 32em) {
-    margin: 6.4rem auto;
+  @media (max-width: 60em) {
+    margin: 0 auto 0 7.2rem;
+    padding: 6.4rem 0;
   }
 }
 </style>

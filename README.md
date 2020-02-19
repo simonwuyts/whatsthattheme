@@ -27,3 +27,9 @@ yarn getthemes
 ```
 
 The resulting color data will be saved to `/public/data/themes.json`.
+
+## This project was built with
+
+- [Vue](https://www.vuejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Netlify](https://www.netlify.com/)

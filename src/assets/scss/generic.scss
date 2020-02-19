@@ -3,9 +3,10 @@
   --color-accent-light: #e70098;
   --color-accent-muted: #{rgba(#cc0087, 0.6)};
   --color-text: #142850;
-  --color-text-light: #27496d;
+  --color-text-light: #{rgba(#27496d, 0.8)};
   --color-text-muted: #{rgba(#27496d, 0.4)};
   --color-lines: #{rgba(#27496d, 0.1)};
+  --color-result-hover: #{rgba(#cc0087, 0.05)};
 
   --font-size-title: 4.8rem;
   --line-height-title: 6.4rem;
@@ -41,6 +42,11 @@
   color: #fff;
 }
 
+html {
+  min-height: 100%;
+  position: relative;
+}
+
 body {
   background-image: linear-gradient(
     to top,
@@ -53,11 +59,18 @@ body {
   box-sizing: border-box;
   color: var(--color-text-light);
   font: var(--font-size-normal) / var(--line-height-normal) 'JetBrains Mono';
+  height: 100%;
   margin: 0;
+  overflow-x: hidden;
 
   *,
   *:before,
   *:after {
     box-sizing: inherit;
   }
+}
+
+strong {
+  color: var(--color-text);
+  font-weight: 700;
 }

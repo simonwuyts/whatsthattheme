@@ -6,7 +6,7 @@ import * as path from 'path'
 
 const RESULTS_FILE_LOCATION = path.join(
   process.cwd(),
-  '../../public/data/themes.json'
+  '../public/data/themes.json'
 )
 
 export async function collectExtensions() {
@@ -28,9 +28,10 @@ export async function collectExtensions() {
             const extensionDetails = await getExtensionDetails(extension)
             extensions.push({
               id: extension.extensionId,
-              name: extension.displayName,
-              description: extension.shortDescription,
-              readme: extensionDetails.readmeUrl,
+              extension: extension.extensionName,
+              extensionName: extension.displayName,
+              publisher: extension.publisher.publisherName,
+              publisherName: extension.publisher.displayName,
               icon: extensionDetails.iconUrl,
               colors: extensionDetails.themeColors
             })

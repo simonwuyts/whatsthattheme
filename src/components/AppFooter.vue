@@ -2,7 +2,11 @@
   <footer class="c-footer">
     <div class="c-footer__credit">
       <div class="c-footer__label">Design / Dev</div>
-      <a href="https://www.simonwuyts.com/" class="c-footer__name">
+      <a
+        href="https://www.simonwuyts.com/"
+        rel="noreferrer"
+        class="c-footer__name"
+      >
         Simon Wuyts
       </a>
     </div>
@@ -10,6 +14,7 @@
       <div class="c-footer__label">Source Code</div>
       <a
         href="https://github.com/simonwuyts/whatsthattheme"
+        rel="noreferrer"
         class="c-footer__name"
       >
         Find it on Github
@@ -17,7 +22,11 @@
     </div>
     <div class="c-footer__credit">
       <div class="c-footer__label">Font</div>
-      <a href="https://www.jetbrains.com/lp/mono/" class="c-footer__name">
+      <a
+        href="https://www.jetbrains.com/lp/mono/"
+        rel="noreferrer"
+        class="c-footer__name"
+      >
         JetBrains Mono
       </a>
     </div>

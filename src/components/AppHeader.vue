@@ -5,7 +5,7 @@
     </h1>
     <p class="c-lead">
       Upload a screenshot of your favorite code editor color theme and find the
-      best match in more than 1.500 Visual Studio Code themes.
+      best match in <strong>more than 1.500 VS Code themes</strong>.
     </p>
   </header>
 </template>

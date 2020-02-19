@@ -1,7 +1,11 @@
 export interface Extension {
   extensionId: string
   displayName: string
-  shortDescription: string
+  extensionName: string
+  publisher: {
+    publisherName: string
+    displayName: string
+  }
   versions: {
     files: {
       assetType: string
@@ -26,9 +30,10 @@ export interface ThemeContribution {
 
 export interface ThemeResult {
   id: string
-  name: string
-  description: string
+  extension: string
+  extensionName: string
+  publisher: string
+  publisherName: string
   icon?: string
   colors?: string[]
-  readme?: string
 }

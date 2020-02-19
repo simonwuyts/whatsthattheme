@@ -7,29 +7,47 @@
         @change="updateFile($event.target.files)"
       />
       <div class="c-upload__button">
-        <div class="c-upload__label">Choose an image…</div>
+        <div class="c-upload__label">
+          <span v-if="showUploadLabel">Choose an image…</span>
+          <span v-if="showProcessingLabel">Processing…</span>
+        </div>
       </div>
     </label>
-    <div class="c-upload__note">…or drag it on the screen</div>
+    <div class="c-upload__note">
+      <span v-if="showUploadLabel">…or drag it on the screen</span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api'
-import { useColors } from '@/composables/use-colors'
+import { createComponent, computed } from '@vue/composition-api'
+import { useStateMachine } from '@/composables/use-state-machine'
 
 export default createComponent({
   name: 'FileInput',
   setup() {
-    const { imageColors, getImageColors } = useColors()
+    const { state, send } = useStateMachine()
+
+    const showUploadLabel = computed(() => {
+      return state.value.matches('idle') || state.value.matches('results')
+    })
+
+    const showProcessingLabel = computed(() => {
+      return !state.value.matches('idle') && !state.value.matches('results')
+    })
 
     function updateFile(files: FileList) {
-      getImageColors(files[0])
+      send({
+        type: 'UPDATE_IMAGE',
+        value: files[0]
+      })
     }
 
     return {
-      imageColors,
-      updateFile
+      updateFile,
+      state,
+      showUploadLabel,
+      showProcessingLabel
     }
   }
 })

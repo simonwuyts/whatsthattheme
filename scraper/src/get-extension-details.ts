@@ -6,7 +6,6 @@ import * as path from 'path'
 import { emptyDir, readFile } from 'fs-extra'
 
 const EXTENSION_PACKAGE_KEY = 'Microsoft.VisualStudio.Services.VSIXPackage'
-const EXTENSION_README_KEY = 'Microsoft.VisualStudio.Services.Content.Details'
 const EXTENSION_ICON_KEY = 'Microsoft.VisualStudio.Services.Icons.Small'
 const TEMP_PATH = path.join(process.cwd(), '.tmp')
 
@@ -31,7 +30,6 @@ function findPropValue(key: string, extension: Extension) {
 
 export async function getExtensionDetails(extension: Extension) {
   const packageUrl = findPropValue(EXTENSION_PACKAGE_KEY, extension)
-  const readmeUrl = findPropValue(EXTENSION_README_KEY, extension)
   const iconUrl = findPropValue(EXTENSION_ICON_KEY, extension)
 
   // Fetch theme package
@@ -96,7 +94,6 @@ export async function getExtensionDetails(extension: Extension) {
   // Return result
   return {
     themeColors,
-    readmeUrl,
     iconUrl
   }
 }
