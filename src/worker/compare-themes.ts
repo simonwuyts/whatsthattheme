@@ -41,7 +41,7 @@ export function compareThemes(
   themeScoresSorted = Object.values(themeScores)
     .filter(result => result.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 10)
+    .slice(0, 20)
 
   return themeScoresSorted
 }
