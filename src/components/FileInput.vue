@@ -70,7 +70,10 @@ export default createComponent({
     })
 
     const showLoadingLabel = computed(() => {
-      return state.value.matches('extractingColors')
+      return (
+        state.value.matches('extractingColors') ||
+        state.value.matches('fetchingThemes')
+      )
     })
 
     function updateFile(files: FileList) {
