@@ -13,7 +13,7 @@ export async function getImageColors(image?: File) {
     const imageDataURL = await readFileAsDataURL(image)
     if (typeof imageDataURL === 'string') {
       results = await analyzeColors(imageDataURL)
-      results = results.slice(0, 1000).map((color: ColorResult) => {
+      results = results.slice(0, 1500).map((color: ColorResult) => {
         return {
           count: color.count,
           color: Color(color.color)
