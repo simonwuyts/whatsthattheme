@@ -33,14 +33,17 @@
             rx="8"
           />
         </svg>
-        <div class="c-upload__label" v-if="showUploadLabel">
-          Choose an image…
-        </div>
         <div class="c-upload__label" v-if="showLoadingLabel">
           Loading image…
         </div>
         <div class="c-upload__label" v-if="showProcessingLabel">
           Processing…
+        </div>
+        <div
+          class="c-upload__label"
+          v-if="!showLoadingLabel && !showProcessingLabel"
+        >
+          Choose an image…
         </div>
       </div>
     </label>

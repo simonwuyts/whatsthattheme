@@ -22,11 +22,13 @@ export function compareThemes(
       let themeScore = themeScores[currentTheme.id]?.score || 0
 
       // Loop each theme color
-      theme.colors.forEach(themeColor => {
-        if (themeColor.toLowerCase() === targetColor.toLowerCase()) {
-          themeScore++
-        }
-      })
+      if (theme.colors.length < 6000) {
+        theme.colors.forEach(themeColor => {
+          if (themeColor.toLowerCase() === targetColor.toLowerCase()) {
+            themeScore++
+          }
+        })
+      }
 
       // Save theme score
       themeScores[currentTheme.id] = {
