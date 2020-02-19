@@ -1,6 +1,6 @@
 import { ColorResult } from '@/composables/use-colors'
 import axios from 'axios/dist/axios'
-import compareWorker from '@/worker/index'
+import workers from '@/worker/index'
 
 export interface ThemeResult {
   id: string
@@ -28,7 +28,7 @@ export async function compareColors(
   themes: ThemeResult[]
 ) {
   if (colors.length > 0 && themes.length > 0) {
-    const result = await compareWorker.send({
+    const result = await workers.compareThemes({
       targetColors: colors,
       themes: themes
     })

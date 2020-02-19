@@ -1,14 +1,24 @@
 import PromiseWorker from 'promise-worker'
-import Worker from 'worker-loader!./worker'
+import CompareWorker from 'worker-loader!./compare-worker'
+import ColorWorker from 'worker-loader!./color-worker'
 
-const promiseWorker = new PromiseWorker(new Worker())
+const compareWorker = new PromiseWorker(new CompareWorker())
+const colorWorker = new PromiseWorker(new ColorWorker())
 
-const send = (message: unknown) =>
-  promiseWorker.postMessage({
+const compareThemes = (message: unknown) =>
+  compareWorker.postMessage({
     type: 'message',
     message
   })
 
+const extractColors = (message: unknown) => {
+  colorWorker.postMessage({
+    type: 'message',
+    message
+  })
+}
+
 export default {
-  send
+  compareThemes,
+  extractColors
 }
