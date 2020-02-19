@@ -3,15 +3,20 @@
     <label class="c-upload__wrapper">
       <input
         class="c-upload__input"
-        :class="{ 'c-upload__input--processing': showProcessingLabel }"
+        :class="{
+          'c-upload__input--processing': showProcessingLabel || showLoadingLabel
+        }"
         type="file"
         @change="updateFile($event.target.files)"
       />
       <div
         class="c-upload__button"
-        :class="{ 'c-upload__button--processing': showProcessingLabel }"
+        :class="{
+          'c-upload__button--processing':
+            showProcessingLabel || showLoadingLabel
+        }"
       >
-        <svg class="c-upload__indicator">
+        <svg class="c-upload__indicator" v-if="showProcessingLabel">
           <defs>
             <mask id="indicatorMask">
               <rect width="100%" height="100%" x="0" y="0" fill="#000" />
@@ -31,6 +36,9 @@
         <div class="c-upload__label" v-if="showUploadLabel">
           Choose an image…
         </div>
+        <div class="c-upload__label" v-if="showLoadingLabel">
+          Loading image…
+        </div>
         <div class="c-upload__label" v-if="showProcessingLabel">
           Processing…
         </div>
@@ -38,7 +46,9 @@
     </label>
     <div class="c-upload__note">
       <span v-if="showUploadLabel">…or drag it on the screen</span>
-      <span v-if="showProcessingLabel">…this might take a minute</span>
+      <span v-if="showProcessingLabel || showLoadingLabel"
+        >…this might take a minute</span
+      >
     </div>
   </div>
 </template>
@@ -57,7 +67,11 @@ export default createComponent({
     })
 
     const showProcessingLabel = computed(() => {
-      return !state.value.matches('idle') && !state.value.matches('results')
+      return state.value.matches('comparing')
+    })
+
+    const showLoadingLabel = computed(() => {
+      return state.value.matches('extractingColors')
     })
 
     function updateFile(files: FileList) {
@@ -71,7 +85,8 @@ export default createComponent({
       updateFile,
       state,
       showUploadLabel,
-      showProcessingLabel
+      showProcessingLabel,
+      showLoadingLabel
     }
   }
 })
