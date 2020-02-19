@@ -65,10 +65,6 @@ export default createComponent({
   setup() {
     const { state, send } = useStateMachine()
 
-    const showUploadLabel = computed(() => {
-      return state.value.matches('idle') || state.value.matches('results')
-    })
-
     const showProcessingLabel = computed(() => {
       return state.value.matches('comparing')
     })
@@ -87,7 +83,6 @@ export default createComponent({
     return {
       updateFile,
       state,
-      showUploadLabel,
       showProcessingLabel,
       showLoadingLabel
     }
