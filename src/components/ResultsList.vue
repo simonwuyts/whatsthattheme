@@ -34,7 +34,8 @@
               <span>{{ result.extensionName }}</span>
             </h2>
             <div class="c-result__description">
-              =&gt; by {{ result.publisherName }}
+              <span class="c-result__arrow">=&gt;</span> by
+              {{ result.publisherName }}
             </div>
           </a>
         </li>
@@ -42,7 +43,8 @@
     </template>
     <template v-else>
       <div class="c-empty">
-        No matches found. 😕 Try again with another image for better results.
+        <strong>No matches found.</strong> 😕<br />
+        Try again with another image for better results.
       </div>
     </template>
   </div>
@@ -147,18 +149,15 @@ export default createComponent({
   position: relative;
   z-index: 2;
 
-  &:after {
-    background: url('../assets/images/arrow-right.svg') no-repeat center center;
-    content: '';
-    height: var(--line-height-normal);
-    opacity: 0;
-    transition: all 0.1s var(--ease-in-out);
-    width: var(--line-height-normal);
+  & > span {
+    background: var(--color-lines);
+    padding: 0 0.8rem;
+    transition: all 0.1s linear;
   }
 
-  .c-result:hover &:after {
-    opacity: 1;
-    transform: translateX(0.8rem);
+  .c-result:hover & > span {
+    background: var(--color-accent);
+    color: #fff;
   }
 }
 
@@ -170,5 +169,9 @@ export default createComponent({
   text-overflow: ellipsis;
   white-space: nowrap;
   z-index: 2;
+}
+
+.c-result__arrow {
+  color: var(--color-text-muted);
 }
 </style>

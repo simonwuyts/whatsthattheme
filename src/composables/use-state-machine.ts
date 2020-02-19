@@ -15,6 +15,7 @@ export interface StateContext {
 interface StateSchema {
   states: {
     idle: {}
+    dragging: {}
     fetchingThemes: {}
     extractingColors: {}
     comparing: {}
@@ -48,7 +49,25 @@ export const compareMachine = Machine<StateContext, StateSchema>(
               target: 'fetchingThemes',
               actions: 'setImageFile'
             }
-          ]
+          ],
+          DRAG: 'dragging'
+        }
+      },
+      dragging: {
+        on: {
+          DROP: [
+            {
+              cond: 'hasThemes',
+              target: 'extractingColors',
+              actions: 'setImageFile'
+            },
+            {
+              cond: 'noThemes',
+              target: 'fetchingThemes',
+              actions: 'setImageFile'
+            }
+          ],
+          RELEASE: 'idle'
         }
       },
       fetchingThemes: {

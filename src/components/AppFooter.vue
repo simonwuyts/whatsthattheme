@@ -45,11 +45,23 @@ export default createComponent({
 .c-footer {
   display: flex;
   margin-top: calc(var(--line-height-normal) * 3);
+
+  @media (max-width: 44em) {
+    display: block;
+    margin-top: calc(var(--line-height-normal) * 2);
+  }
 }
 
 .c-footer__credit {
-  & + & {
-    margin-left: 7.2rem;
+  @media (min-width: 44em) {
+    & + & {
+      margin-left: 7.2rem;
+    }
+  }
+
+  @media (max-width: 44em) {
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 
@@ -59,7 +71,12 @@ export default createComponent({
   font-weight: 700;
   text-decoration: none;
 
+  @media (max-width: 44em) {
+    margin-left: 1.6rem;
+  }
+
   &:hover {
+    background: var(--color-result-hover);
     box-shadow: inset 0 -0.1rem 0 var(--color-accent);
   }
 }
