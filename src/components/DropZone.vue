@@ -3,7 +3,7 @@
     class="c-dropzone"
     :class="{ 'c-dropzone--active': state.matches('dragging') }"
   >
-    <div class="c-dropzone__label">Drop your screenshot here…</div>
+    <div class="c-dropzone__label">🖼<br />Drop your<br />screenshot here…</div>
   </div>
 </template>
 
@@ -52,8 +52,11 @@ export default createComponent({
 
 <style lang="scss">
 .c-dropzone {
-  background: red;
+  align-items: center;
+  background: var(--color-dropzone);
   bottom: 0;
+  display: flex;
+  justify-content: center;
   left: 0;
   opacity: 0;
   pointer-events: none;
@@ -65,5 +68,26 @@ export default createComponent({
 
 .c-dropzone--active {
   opacity: 1;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateY(-0.8rem);
+  }
+  50% {
+    transform: translateY(0.8rem) scale(0.95);
+  }
+  100% {
+    transform: translateY(-0.8rem);
+  }
+}
+
+.c-dropzone__label {
+  animation: pulse 2s ease-in-out 0s infinite both;
+  font-size: var(--font-size-lead);
+  font-weight: 700;
+  max-width: 80rem;
+  text-align: center;
+  width: calc(100% - 6.4rem);
 }
 </style>
