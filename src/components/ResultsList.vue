@@ -14,7 +14,14 @@
           v-for="result in state.context.themeScores"
           :key="result.id"
         >
-          <a href="#" class="c-result__link">
+          <a
+            :href="
+              `https://marketplace.visualstudio.com/items?itemName=${result.publisher}.${result.extension}`
+            "
+            target="_blank"
+            rel="noreferrer"
+            class="c-result__link"
+          >
             <div class="c-result__icon">
               <img
                 :src="result.icon"

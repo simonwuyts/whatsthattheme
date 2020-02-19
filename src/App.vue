@@ -49,6 +49,10 @@ export default createComponent({
   width: calc(100% - 9.6rem);
 
   @media (max-width: 60em) {
+    max-width: 60rem;
+  }
+
+  @media (max-width: 48em) {
     margin: 0 auto 0 7.2rem;
     padding: 6.4rem 0;
   }
