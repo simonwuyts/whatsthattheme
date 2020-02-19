@@ -23,5 +23,5 @@ export async function getImageColors(image?: File) {
       })
     }
   }
-  return results
+  return Object.freeze(results)
 }

@@ -20,7 +20,7 @@ export interface ThemeScore extends ThemeResult {
 
 export async function getThemes(): Promise<ThemeResult[]> {
   const result = await axios.get('/data/themes.json')
-  return result.data
+  return Object.freeze(result.data)
 }
 
 export async function compareColors(

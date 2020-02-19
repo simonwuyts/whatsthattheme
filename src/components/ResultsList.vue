@@ -30,11 +30,11 @@
                 v-if="result.icon"
               />
             </div>
-            <h2 class="c-result__title">{{ result.extensionName }}</h2>
-            <div class="c-result__meta">
-              <div class="c-result__description">
-                {{ result.publisherName }}
-              </div>
+            <h2 class="c-result__title">
+              <span>{{ result.extensionName }}</span>
+            </h2>
+            <div class="c-result__description">
+              =&gt; by {{ result.publisherName }}
             </div>
           </a>
         </li>
@@ -113,7 +113,7 @@ export default createComponent({
 .c-result__link {
   color: inherit;
   display: block;
-  padding-left: 8.8rem;
+  padding-left: 8rem;
   position: relative;
   text-decoration: none;
 }
@@ -139,18 +139,11 @@ export default createComponent({
 
 .c-result__title {
   color: var(--color-text);
+  display: flex;
   font-size: var(--font-size-lead);
   font-weight: 700;
   line-height: var(--line-height-lead);
   margin: 0;
-  position: relative;
-  z-index: 2;
-}
-
-.c-result__meta {
-  color: var(--color-text-light);
-  display: flex;
-  font-size: 1.4rem;
   position: relative;
   z-index: 2;
 
@@ -158,7 +151,6 @@ export default createComponent({
     background: url('../assets/images/arrow-right.svg') no-repeat center center;
     content: '';
     height: var(--line-height-normal);
-    margin-left: 0.8rem;
     opacity: 0;
     transition: all 0.1s var(--ease-in-out);
     width: var(--line-height-normal);
@@ -171,8 +163,12 @@ export default createComponent({
 }
 
 .c-result__description {
+  color: var(--color-text-light);
+  font-size: 1.4rem;
   overflow: hidden;
+  position: relative;
   text-overflow: ellipsis;
   white-space: nowrap;
+  z-index: 2;
 }
 </style>
