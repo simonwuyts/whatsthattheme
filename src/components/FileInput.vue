@@ -48,7 +48,7 @@
         </div>
         <div
           class="c-upload__label"
-          v-if="!showLoadingLabel && !showProcessingLabel"
+          v-if="!showLoadingLabel && !showProcessingLabel && !showFetchingLabel"
         >
           Choose an image…
         </div>
