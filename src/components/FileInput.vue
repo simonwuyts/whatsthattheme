@@ -4,7 +4,8 @@
       <input
         class="c-upload__input"
         :class="{
-          'c-upload__input--processing': showProcessingLabel || showLoadingLabel
+          'c-upload__input--processing':
+            showProcessingLabel || showLoadingLabel || showFetchingLabel
         }"
         type="file"
         @change="updateFile($event.target.files)"
@@ -13,10 +14,13 @@
         class="c-upload__button"
         :class="{
           'c-upload__button--processing':
-            showProcessingLabel || showLoadingLabel
+            showProcessingLabel || showLoadingLabel || showFetchingLabel
         }"
       >
-        <svg class="c-upload__indicator" v-if="showProcessingLabel">
+        <svg
+          class="c-upload__indicator"
+          v-if="showProcessingLabel || showFetchingLabel"
+        >
           <defs>
             <mask id="indicatorMask">
               <rect width="100%" height="100%" x="0" y="0" fill="#000" />
@@ -35,6 +39,9 @@
         </svg>
         <div class="c-upload__label" v-if="showLoadingLabel">
           Loading image…
+        </div>
+        <div class="c-upload__label" v-if="showFetchingLabel">
+          Loading themes…
         </div>
         <div class="c-upload__label" v-if="showProcessingLabel">
           Processing…
@@ -65,15 +72,16 @@ export default createComponent({
   setup() {
     const { state, send } = useStateMachine()
 
+    const showFetchingLabel = computed(() => {
+      return state.value.matches('fetchingThemes')
+    })
+
     const showProcessingLabel = computed(() => {
       return state.value.matches('comparing')
     })
 
     const showLoadingLabel = computed(() => {
-      return (
-        state.value.matches('extractingColors') ||
-        state.value.matches('fetchingThemes')
-      )
+      return state.value.matches('extractingColors')
     })
 
     function updateFile(files: FileList) {
@@ -86,6 +94,7 @@ export default createComponent({
     return {
       updateFile,
       state,
+      showFetchingLabel,
       showProcessingLabel,
       showLoadingLabel
     }

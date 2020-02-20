@@ -2,11 +2,11 @@
   <div class="c-results-list" v-if="state.matches('results')">
     <template v-if="state.context.themeScores.length > 0">
       <div class="c-count">
-        There are
-        <span class="c-count__number">
-          {{ state.context.themeScores.length }} themes
-        </span>
-        matching your image.
+        These
+        <span class="c-count__number"
+          >{{ state.context.themeScores.length }} themes</span
+        >
+        are closely matching the colors in your image.
         <a href="#" @click.prevent="send('RETRY')">Wanna try again?</a>
       </div>
       <ul class="c-results">
