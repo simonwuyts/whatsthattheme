@@ -1,7 +1,9 @@
-import { Extension, ThemeResult } from './types'
+import { Extension } from './types'
+import { ThemeResult } from '../../src/composables/use-themes'
 import { fetchExtensionPage } from './fetch-extension-page'
-import { getExtensionDetails } from './get-extension-details'
+import { getExtensionThemes } from './get-extension-themes'
 import { writeFile, createFile } from 'fs-extra'
+import ProgressBar from '@open-tech-world/cli-progress-bar'
 import * as path from 'path'
 
 const RESULTS_FILE_LOCATION = path.join(
@@ -9,24 +11,29 @@ const RESULTS_FILE_LOCATION = path.join(
   '../public/data/themes.json'
 )
 
+const errors = []
+
 export async function collectExtensions() {
   // Collect and combine all results
   let activePage = 1
   let resultsAvailable = true
   const themes: ThemeResult[] = []
 
-  //while (activePage < 2) {
-  while (resultsAvailable) {
+  while (activePage < 2) {
+    // while (resultsAvailable) {
     try {
       const results = await fetchExtensionPage(activePage)
-      console.log(`Page ${activePage} was fetched.`)
+      console.log(`Processing page ${activePage} extensions...`)
       const pageExtensions: Extension[] = results.results[0].extensions
 
       if (pageExtensions.length > 0) {
+        // Set progress bar
+        const progressBar = new ProgressBar()
+        progressBar.run('', 0, pageExtensions.length)
         // Fetch details
         for (const [i, extension] of Object.entries(pageExtensions)) {
           try {
-            const extensionDetails = await getExtensionDetails(extension)
+            const extensionDetails = await getExtensionThemes(extension)
             extensionDetails.extensionThemes.forEach(theme => {
               themes.push({
                 extension: extension.extensionName,
@@ -39,23 +46,18 @@ export async function collectExtensions() {
               })
             })
 
-            console.log(
-              `Extension ${parseInt(i) + 1} (${
-                extension.displayName
-              }) was processed.`
-            )
+            progressBar.run('', parseInt(i) + 1, pageExtensions.length)
           } catch (e) {
-            console.log(
-              `Something went wrong with extension ${parseInt(i) + 1}`
-            )
+            errors.push(e)
           }
         }
+        progressBar.stop(true)
         activePage++
       } else {
         resultsAvailable = false
       }
     } catch (e) {
-      console.log(`Something went wrong with page ${activePage}`)
+      errors.push(e)
     }
   }
 
@@ -67,6 +69,6 @@ export async function collectExtensions() {
     await writeFile(RESULTS_FILE_LOCATION, JSON.stringify(filteredThemes))
     console.log(`${filteredThemes.length} were processed.`)
   } catch (e) {
-    console.log(`Something went wrong while saving the results.`)
+    errors.push(e)
   }
 }

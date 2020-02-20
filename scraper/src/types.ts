@@ -18,9 +18,10 @@ export interface ThemeDefinition {
   name: string
   tokenColors: {
     settings: {
-      foreground: string
+      [key: string]: string
     }
   }[]
+  colors: {}
 }
 
 export interface ThemeContribution {
@@ -29,17 +30,7 @@ export interface ThemeContribution {
   path: string
 }
 
-export interface ThemeResult {
-  extension: string
-  extensionName: string
-  publisher: string
-  publisherName: string
-  themeName: string
-  icon?: string
-  colors?: unknown[]
-}
-
 export interface ThemeDetails {
   name: string
-  colors: unknown[]
+  colors: number[][]
 }

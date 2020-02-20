@@ -1,5 +1,5 @@
 <template>
-  <div class="c-upload">
+  <div class="c-upload" v-if="!state.matches('results')">
     <label class="c-upload__wrapper">
       <input
         class="c-upload__input"

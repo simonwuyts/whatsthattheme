@@ -6,7 +6,8 @@
         <span class="c-count__number">
           {{ state.context.themeScores.length }} themes
         </span>
-        matching your image
+        matching your image.
+        <a href="#" @click.prevent="send('RETRY')">Wanna try again?</a>
       </div>
       <ul class="c-results">
         <li
@@ -29,9 +30,15 @@
                 class="c-result__image"
                 v-if="result.icon"
               />
+              <img
+                src="@/assets/images/thumb.svg"
+                :alt="result.extensionName"
+                class="c-result__image"
+                v-else
+              />
             </div>
             <h2 class="c-result__title">
-              <span>{{ result.themeName }}</span>
+              <span>{{ result.themeName || result.extensionName }}</span>
             </h2>
             <div class="c-result__description">
               <span class="c-result__arrow">=&gt;</span> by
@@ -44,7 +51,8 @@
     <template v-else>
       <div class="c-empty">
         <strong>No matches found.</strong> 😕<br />
-        Try again with another image for better results.
+        <a href="#" @click.prevent="send('RETRY')">Try again</a> with another
+        image for better results.
       </div>
     </template>
   </div>
@@ -58,10 +66,11 @@ export default createComponent({
   name: 'ResultsList',
 
   setup() {
-    const { state } = useStateMachine()
+    const { state, send } = useStateMachine()
 
     return {
-      state
+      state,
+      send
     }
   }
 })
@@ -69,16 +78,38 @@ export default createComponent({
 
 <style lang="scss">
 .c-results-list {
-  margin-top: 6.4rem;
+  margin-top: var(--line-height-normal);
 }
 
 .c-count {
   margin-bottom: var(--line-height-normal);
+
+  a {
+    color: var(--color-accent);
+    display: inline-flex;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      box-shadow: inset 0 -0.1rem 0 var(--color-accent);
+    }
+  }
 }
 
 .c-count__number {
   color: var(--color-text);
   font-weight: 700;
+}
+
+.c-empty a {
+  color: var(--color-accent);
+  display: inline-flex;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover {
+    box-shadow: inset 0 -0.1rem 0 var(--color-accent);
+  }
 }
 
 .c-results {
@@ -92,6 +123,19 @@ export default createComponent({
     calc(var(--line-height-normal) * 2);
   display: block;
   position: relative;
+
+  & + & {
+    margin-top: var(--line-height-normal);
+  }
+}
+
+.c-result__link {
+  color: inherit;
+  display: block;
+  min-height: calc(var(--line-height-normal) * 2);
+  padding-left: 8rem;
+  position: relative;
+  text-decoration: none;
 
   &:before {
     bottom: 0;
@@ -107,17 +151,16 @@ export default createComponent({
     background: var(--color-result-hover);
   }
 
-  & + & {
-    margin-top: var(--line-height-normal);
+  &:after {
+    background: transparent;
+    bottom: calc((var(--line-height-normal) / 2) * -1);
+    left: -100vw;
+    content: '';
+    position: absolute;
+    right: -100vw;
+    top: calc((var(--line-height-normal) / 2) * -1);
+    z-index: 1;
   }
-}
-
-.c-result__link {
-  color: inherit;
-  display: block;
-  padding-left: 8rem;
-  position: relative;
-  text-decoration: none;
 }
 
 .c-result__icon {
@@ -137,6 +180,7 @@ export default createComponent({
   position: absolute;
   top: 0.8rem;
   width: 4.8rem;
+  z-index: 2;
 }
 
 .c-result__title {
@@ -152,7 +196,6 @@ export default createComponent({
   & > span {
     background: var(--color-lines);
     padding: 0 0.8rem;
-    transition: all 0.1s linear;
   }
 
   .c-result:hover & > span {

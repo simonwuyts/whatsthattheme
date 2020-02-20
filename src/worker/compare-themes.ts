@@ -18,25 +18,23 @@ export function compareThemes(
 
     // Loop each theme
     themes.forEach(theme => {
-      const currentTheme = theme
-      let themeScore = themeScores[currentTheme.id]?.score || 0
+      const identifier = `${theme.publisher}${theme.extension}${theme.themeName}`
+      let themeScore = themeScores[identifier]?.score || 0
 
       // Loop each theme color
-      if (theme.colors.length < 6000) {
-        theme.colors.forEach(themeColor => {
-          if (
-            themeColor[0] === targetColor[0] &&
-            themeColor[1] === targetColor[1] &&
-            themeColor[2] === targetColor[2]
-          ) {
-            themeScore++
-          }
-        })
-      }
+      theme.colors.forEach(themeColor => {
+        if (
+          themeColor[0] === targetColor[0] &&
+          themeColor[1] === targetColor[1] &&
+          themeColor[2] === targetColor[2]
+        ) {
+          themeScore++
+        }
+      })
 
       // Save theme score
-      themeScores[currentTheme.id] = {
-        ...currentTheme,
+      themeScores[identifier] = {
+        ...theme,
         score: themeScore
       }
     })

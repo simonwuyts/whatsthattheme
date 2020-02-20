@@ -3,17 +3,25 @@
     <h1 class="c-title">
       What's <br /><span class="c-title__accent">=></span> that theme
     </h1>
-    <p class="c-lead">
+    <p class="c-lead" v-if="!state.matches('results')">
       Upload a screenshot of your favorite code editor color theme and find the
-      best match in <strong>more than 1.500 VS Code themes</strong>.
+      best match in <strong>almost 4.000 VS Code themes</strong>.
     </p>
   </header>
 </template>
 
 <script lang="ts">
 import { createComponent } from '@vue/composition-api'
+import { useStateMachine } from '@/composables/use-state-machine'
+
 export default createComponent({
-  name: 'AppHeader'
+  name: 'AppHeader',
+  setup() {
+    const { state } = useStateMachine()
+    return {
+      state
+    }
+  }
 })
 </script>
 

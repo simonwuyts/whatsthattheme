@@ -22,7 +22,7 @@ export async function getImageColors(image?: File) {
         }
       })
       // results.forEach(color => {
-      //   console.log(`%c${color.color}`, `background: ${color.color}`)
+      //   console.log(`%c${color.color}`, `background: rgb(${color.color[0]}, ${color.color[1]}, ${color.color[2]})`)
       // })
     }
   }

@@ -3,12 +3,11 @@ import axios from 'axios/dist/axios'
 import workers from '@/worker/index'
 
 export interface ThemeResult {
-  id: string
   extension: string
   extensionName: string
   publisher: string
   publisherName: string
-  description: string
+  themeName: string
   icon?: string
   colors: number[][]
   score?: number

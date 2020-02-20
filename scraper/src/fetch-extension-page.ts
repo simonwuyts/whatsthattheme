@@ -4,6 +4,8 @@ const EXTENSIONS_API_ENDPOINT =
   'https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery'
 const EXTENSIONS_PER_PAGE = 100
 
+const errors = []
+
 export async function fetchExtensionPage(pageNumber: number) {
   // Set search query
   const body = {
@@ -44,7 +46,7 @@ export async function fetchExtensionPage(pageNumber: number) {
 
     extensions = await res.json()
   } catch (e) {
-    console.log(`Something went wrong while fetching the Extensions API.`)
+    errors.push(e)
   }
   return extensions
 }

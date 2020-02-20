@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@open-tech-world/cli-progress-bar@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@open-tech-world/cli-progress-bar/-/cli-progress-bar-1.0.6.tgz#a4f29e2eef514f559c15d9f9764d79eab8269fcb"
+  integrity sha512-4uFpbf/8Og6FkVOvtiART7HTVoWWWn9uNLte5fyYRISLIANeCLr1jAQfxTgT3GmqbfZ3MOAmnjfDaoFTCW2Rdw==
+
 "@types/extract-zip@^1.6.2":
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/@types/extract-zip/-/extract-zip-1.6.2.tgz#5c7eb441c41136167a42b88b64051e6260c29e86"

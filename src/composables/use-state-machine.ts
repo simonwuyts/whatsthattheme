@@ -115,6 +115,9 @@ export const compareMachine = Machine<StateContext, StateSchema>(
             target: 'extractingColors',
             actions: 'setImageFile'
           },
+          RETRY: {
+            target: 'idle'
+          },
           DROP: [
             {
               cond: 'hasThemes',
