@@ -15,6 +15,7 @@ export interface Extension {
 }
 
 export interface ThemeDefinition {
+  name: string
   tokenColors: {
     settings: {
       foreground: string

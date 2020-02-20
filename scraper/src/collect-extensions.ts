@@ -15,8 +15,8 @@ export async function collectExtensions() {
   let resultsAvailable = true
   const themes: ThemeResult[] = []
 
-  while (activePage < 2) {
-    // while (resultsAvailable) {
+  //while (activePage < 2) {
+  while (resultsAvailable) {
     try {
       const results = await fetchExtensionPage(activePage)
       console.log(`Page ${activePage} was fetched.`)
@@ -59,12 +59,13 @@ export async function collectExtensions() {
     }
   }
 
-  const filteredExtensions = themes.filter(theme => theme.colors.length > 0)
+  const filteredThemes = themes.filter(theme => theme.colors.length > 0)
 
   // Save results
   try {
     await createFile(RESULTS_FILE_LOCATION)
-    await writeFile(RESULTS_FILE_LOCATION, JSON.stringify(filteredExtensions))
+    await writeFile(RESULTS_FILE_LOCATION, JSON.stringify(filteredThemes))
+    console.log(`${filteredThemes.length} were processed.`)
   } catch (e) {
     console.log(`Something went wrong while saving the results.`)
   }

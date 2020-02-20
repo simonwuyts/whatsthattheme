@@ -74,7 +74,10 @@ export async function getExtensionDetails(extension: Extension) {
           )
           if (Array.isArray(themeDefinition.tokenColors)) {
             themeDefinition.tokenColors.forEach(token => {
-              if (token.settings?.foreground) {
+              if (
+                token.settings?.foreground &&
+                token.settings.foreground !== 'inherit'
+              ) {
                 // Convert to rgb(a) array
                 const colorArray = Color(token.settings.foreground)
                   .rgb()
@@ -85,7 +88,7 @@ export async function getExtensionDetails(extension: Extension) {
             })
           }
           extensionThemes.push({
-            name: theme.label,
+            name: themeDefinition.name,
             colors: themeColors
           })
         }
@@ -93,6 +96,7 @@ export async function getExtensionDetails(extension: Extension) {
     }
   } catch (e) {
     console.log(`Something went wrong while extracting the theme colors.`)
+    console.log(e)
   }
 
   // Clean tmp folder
