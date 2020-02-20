@@ -10,7 +10,7 @@ export interface ThemeResult {
   publisherName: string
   description: string
   icon?: string
-  colors: string[]
+  colors: number[][]
   score?: number
 }
 

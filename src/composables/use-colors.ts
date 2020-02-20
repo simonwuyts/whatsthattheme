@@ -3,7 +3,7 @@ import Color from 'color'
 import { readFileAsDataURL } from './utils'
 
 export interface ColorResult {
-  color: string
+  color: number[]
   count: number
 }
 
@@ -17,10 +17,13 @@ export async function getImageColors(image?: File) {
         return {
           count: color.count,
           color: Color(color.color)
-            .hex()
-            .toString()
+            .rgb()
+            .array()
         }
       })
+      // results.forEach(color => {
+      //   console.log(`%c${color.color}`, `background: ${color.color}`)
+      // })
     }
   }
   return Object.freeze(results)

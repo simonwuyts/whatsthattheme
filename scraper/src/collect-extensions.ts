@@ -13,9 +13,10 @@ export async function collectExtensions() {
   // Collect and combine all results
   let activePage = 1
   let resultsAvailable = true
-  const extensions: ThemeResult[] = []
+  const themes: ThemeResult[] = []
 
-  while (resultsAvailable) {
+  while (activePage < 2) {
+    // while (resultsAvailable) {
     try {
       const results = await fetchExtensionPage(activePage)
       console.log(`Page ${activePage} was fetched.`)
@@ -26,15 +27,18 @@ export async function collectExtensions() {
         for (const [i, extension] of Object.entries(pageExtensions)) {
           try {
             const extensionDetails = await getExtensionDetails(extension)
-            extensions.push({
-              id: extension.extensionId,
-              extension: extension.extensionName,
-              extensionName: extension.displayName,
-              publisher: extension.publisher.publisherName,
-              publisherName: extension.publisher.displayName,
-              icon: extensionDetails.iconUrl,
-              colors: extensionDetails.themeColors
+            extensionDetails.extensionThemes.forEach(theme => {
+              themes.push({
+                extension: extension.extensionName,
+                extensionName: extension.displayName,
+                publisher: extension.publisher.publisherName,
+                publisherName: extension.publisher.displayName,
+                icon: extensionDetails.iconUrl,
+                themeName: theme.name,
+                colors: theme.colors
+              })
             })
+
             console.log(
               `Extension ${parseInt(i) + 1} (${
                 extension.displayName
@@ -55,9 +59,7 @@ export async function collectExtensions() {
     }
   }
 
-  const filteredExtensions = extensions.filter(
-    extension => extension.colors.length > 0
-  )
+  const filteredExtensions = themes.filter(theme => theme.colors.length > 0)
 
   // Save results
   try {

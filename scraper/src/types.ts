@@ -29,11 +29,16 @@ export interface ThemeContribution {
 }
 
 export interface ThemeResult {
-  id: string
   extension: string
   extensionName: string
   publisher: string
   publisherName: string
+  themeName: string
   icon?: string
-  colors?: string[]
+  colors?: unknown[]
+}
+
+export interface ThemeDetails {
+  name: string
+  colors: unknown[]
 }

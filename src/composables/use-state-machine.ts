@@ -1,4 +1,4 @@
-import { Machine, assign, interpret, State, EventObject } from 'xstate'
+import { Machine, assign, interpret, State } from 'xstate'
 import { getImageColors, ColorResult } from '@/composables/use-colors'
 import { getThemes, compareColors, ThemeResult } from '@/composables/use-themes'
 import { ref, Ref } from '@vue/composition-api'
@@ -114,7 +114,19 @@ export const compareMachine = Machine<StateContext, StateSchema>(
           UPDATE_IMAGE: {
             target: 'extractingColors',
             actions: 'setImageFile'
-          }
+          },
+          DROP: [
+            {
+              cond: 'hasThemes',
+              target: 'extractingColors',
+              actions: 'setImageFile'
+            },
+            {
+              cond: 'noThemes',
+              target: 'fetchingThemes',
+              actions: 'setImageFile'
+            }
+          ]
         }
       }
     }

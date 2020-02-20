@@ -1,8 +1,9 @@
-import { Extension, ThemeDefinition } from './types'
+import { Extension, ThemeDefinition, ThemeDetails } from './types'
 import fetch, { Response } from 'node-fetch'
 import * as unzip from 'unzip-stream'
 import stripComments from 'strip-json-comments'
 import * as path from 'path'
+import Color from 'color'
 import { emptyDir, readFile } from 'fs-extra'
 
 const EXTENSION_PACKAGE_KEY = 'Microsoft.VisualStudio.Services.VSIXPackage'
@@ -56,7 +57,7 @@ export async function getExtensionDetails(extension: Extension) {
     console.log('No package url')
   }
 
-  const themeColors: string[] = []
+  const extensionThemes: ThemeDetails[] = []
 
   try {
     // Read package.json
@@ -66,6 +67,7 @@ export async function getExtensionDetails(extension: Extension) {
 
     if (packageOptions?.contributes?.themes) {
       for (const theme of packageOptions.contributes.themes) {
+        const themeColors: unknown[] = []
         if (theme.path.match(/(.+)\.json/)) {
           const themeDefinition: ThemeDefinition = await readJSON(
             path.join(TEMP_PATH, 'extension', theme.path)
@@ -73,10 +75,19 @@ export async function getExtensionDetails(extension: Extension) {
           if (Array.isArray(themeDefinition.tokenColors)) {
             themeDefinition.tokenColors.forEach(token => {
               if (token.settings?.foreground) {
-                themeColors.push(token.settings.foreground)
+                // Convert to rgb(a) array
+                const colorArray = Color(token.settings.foreground)
+                  .rgb()
+                  .array()
+                // Add to results
+                themeColors.push(colorArray)
               }
             })
           }
+          extensionThemes.push({
+            name: theme.label,
+            colors: themeColors
+          })
         }
       }
     }
@@ -93,7 +104,7 @@ export async function getExtensionDetails(extension: Extension) {
 
   // Return result
   return {
-    themeColors,
+    extensionThemes,
     iconUrl
   }
 }

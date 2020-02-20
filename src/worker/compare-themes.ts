@@ -24,7 +24,11 @@ export function compareThemes(
       // Loop each theme color
       if (theme.colors.length < 6000) {
         theme.colors.forEach(themeColor => {
-          if (themeColor.toLowerCase() === targetColor.toLowerCase()) {
+          if (
+            themeColor[0] === targetColor[0] &&
+            themeColor[1] === targetColor[1] &&
+            themeColor[2] === targetColor[2]
+          ) {
             themeScore++
           }
         })

@@ -48,10 +48,10 @@
       </div>
     </label>
     <div class="c-upload__note">
-      <span v-if="showUploadLabel">…or drag it on the screen</span>
       <span v-if="showProcessingLabel || showLoadingLabel"
         >…this might take a minute</span
       >
+      <span v-else>…or drag it on the screen</span>
     </div>
   </div>
 </template>

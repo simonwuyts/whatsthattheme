@@ -12,7 +12,7 @@
         <li
           class="c-result"
           v-for="result in state.context.themeScores"
-          :key="result.id"
+          :key="`${result.extension}.${result.themeName}`"
         >
           <a
             :href="
@@ -31,7 +31,7 @@
               />
             </div>
             <h2 class="c-result__title">
-              <span>{{ result.extensionName }}</span>
+              <span>{{ result.themeName }}</span>
             </h2>
             <div class="c-result__description">
               <span class="c-result__arrow">=&gt;</span> by
