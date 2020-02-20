@@ -19,8 +19,8 @@ export async function collectExtensions() {
   let resultsAvailable = true
   const themes: ThemeResult[] = []
 
-  while (activePage < 2) {
-    // while (resultsAvailable) {
+  //while (activePage < 2) {
+  while (resultsAvailable) {
     try {
       const results = await fetchExtensionPage(activePage)
       console.log(`Processing page ${activePage} extensions...`)
